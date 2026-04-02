@@ -30,8 +30,14 @@ import subprocess
 import sys
 import time
 
+import shutil
 import numpy as np
 import yaml
+
+# Ensure common binary locations are in PATH (CloudLab root sessions may miss these)
+_extra_paths = ['/usr/local/bin', '/usr/bin', '/usr/local/sbin', '/usr/sbin', '/snap/bin',
+                os.path.expanduser('~/bin'), os.path.expanduser('~/.local/bin')]
+os.environ['PATH'] = os.pathsep.join(_extra_paths) + os.pathsep + os.environ.get('PATH', '')
 
 try:
     from skopt import gp_minimize
@@ -39,6 +45,12 @@ try:
 except ImportError:
     print("Error: scikit-optimize required. Install with: pip3 install scikit-optimize", file=sys.stderr)
     sys.exit(1)
+
+# Pre-flight check: verify kubectl and ghz are reachable
+for _tool in ('kubectl', 'ghz'):
+    if not shutil.which(_tool):
+        print(f"Error: '{_tool}' not found in PATH. PATH={os.environ.get('PATH')}", file=sys.stderr)
+        sys.exit(1)
 
 
 # ======================== Configuration ========================

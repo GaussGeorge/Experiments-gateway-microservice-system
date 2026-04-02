@@ -20,6 +20,9 @@
 
 set -euo pipefail
 
+# Ensure common binary locations are in PATH
+export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/snap/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+
 # ======================== Configuration ========================
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOTELAPP_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"

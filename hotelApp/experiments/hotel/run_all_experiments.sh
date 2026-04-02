@@ -20,6 +20,9 @@
 
 set -euo pipefail
 
+# Ensure common binary locations are in PATH (CloudLab root sessions may miss these)
+export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/snap/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 SKIP_BO=false
@@ -45,6 +48,20 @@ log() {
     echo "================================================================"
     echo ""
 }
+
+# ======================== Pre-flight checks ========================
+preflight_ok=true
+for cmd in kubectl ghz python3; do
+    if ! command -v "$cmd" &>/dev/null; then
+        echo "ERROR: '$cmd' not found in PATH ($PATH)"
+        preflight_ok=false
+    fi
+done
+if [ "$preflight_ok" = false ]; then
+    echo "Please install missing tools or add them to PATH before running."
+    exit 1
+fi
+echo "Pre-flight: kubectl=$(command -v kubectl), ghz=$(command -v ghz), python3=$(command -v python3)"
 
 # ======================== Step 1: Bayesian Optimization ========================
 if [ "$SKIP_BO" = false ]; then
