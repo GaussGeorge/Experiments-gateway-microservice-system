@@ -1,4 +1,4 @@
-module github.com/pennsail/dagor-grpc
+module github.com/Jiali-Xing/dagor-grpc
 
 go 1.23.0
 

@@ -1,4 +1,4 @@
-module github.com/pennsail/rajomon
+module github.com/Jiali-Xing/rajomon
 
 go 1.23.0
 
