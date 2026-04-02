@@ -97,14 +97,13 @@ func (d *Dagor) UnaryInterceptorServer(ctx context.Context, req interface{}, inf
 	currentThresholdB := currentThresholdBVal.(int) // Assert the type to int
 	currentThresholdU := currentThresholdUVal.(int) // Assert the type to int
 
-	// If the request's B and U don't meet the threshold, drop the request
-	if B < currentThresholdB || (B == currentThresholdB && U <= currentThresholdU) {
-		logger("[AQM Server Admit Req] Request B, U %d, %d values are below the threshold %d, %d", B, U, currentThresholdB, currentThresholdU)
-		// use go routine to update the histogram d.UpdateHistogram(true, B, U)
+	// Admit if request priority (B, U) meets or exceeds threshold (B*, U*)
+	// Higher B = higher business priority; B* is the minimum allowed
+	if B > currentThresholdB || (B == currentThresholdB && U >= currentThresholdU) {
+		logger("[AQM Server Admit Req] Request B, U %d, %d meets threshold %d, %d", B, U, currentThresholdB, currentThresholdU)
 		go d.UpdateHistogram(true, B, U)
 	} else {
-		// if B >= currentThresholdB && U >= currentThresholdU {
-		logger("[AQM Server Drop Req] Request B, U %d, %d values are above the threshold %d, %d", B, U, currentThresholdB, currentThresholdU)
+		logger("[AQM Server Drop Req] Request B, U %d, %d below threshold %d, %d", B, U, currentThresholdB, currentThresholdU)
 		go d.UpdateHistogram(false, B, U)
 		return nil, status.Errorf(codes.ResourceExhausted, "[Server Admission Control] Request B, U values do not meet the threshold")
 	}

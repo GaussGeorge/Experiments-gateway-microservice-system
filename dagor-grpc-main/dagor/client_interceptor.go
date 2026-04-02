@@ -63,11 +63,12 @@ func (d *Dagor) UnaryInterceptorClient(ctx context.Context, method string, req i
 	val, ok := d.thresholdTable.Load(methodName[0])
 	if ok {
 		threshold := val.(thresholdVal)
-		if B > threshold.Bstar || (B == threshold.Bstar && U > threshold.Ustar) {
-			logger("[Ratelimiting] B %d or U %d value above the threshold B* %d or U* %d, request dropped", B, U, threshold.Bstar, threshold.Ustar)
+		// Drop if request priority is below threshold (B < B* or B==B* && U < U*)
+		if B < threshold.Bstar || (B == threshold.Bstar && U < threshold.Ustar) {
+			logger("[Ratelimiting] B %d or U %d below threshold B* %d or U* %d, request dropped", B, U, threshold.Bstar, threshold.Ustar)
 			return status.Errorf(codes.ResourceExhausted, "[Local Admission Control] B or U values do not meet the threshold B* or U*, request dropped")
 		}
-		logger("[Ratelimiting] B %d and U %d values below the threshold B* %d and U* %d, request sent", B, U, threshold.Bstar, threshold.Ustar)
+		logger("[Ratelimiting] B %d and U %d meets threshold B* %d and U* %d, request sent", B, U, threshold.Bstar, threshold.Ustar)
 	} else {
 		logger("[Ratelimiting] B* and U* values not found in the threshold table for method %s.", methodName[0])
 	}
