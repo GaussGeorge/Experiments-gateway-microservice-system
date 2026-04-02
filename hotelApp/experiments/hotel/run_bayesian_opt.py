@@ -46,7 +46,11 @@ except ImportError:
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 HOTELAPP_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
 YAML_PATH = os.path.join(HOTELAPP_DIR, 'msgraph.yaml')
-PROTO_DIR = os.environ.get('PROTO_DIR', f'/users/{os.environ.get("USER", os.environ.get("USERNAME", "jiali"))}/hotelproto')
+# Detect CloudLab username from script path (works even when running as root)
+import re as _re
+_match = _re.search(r'/users/([^/]+)', SCRIPT_DIR)
+_cloudlab_user = _match.group(1) if _match else os.environ.get("USER", "Gauss")
+PROTO_DIR = os.environ.get('PROTO_DIR', f'/users/{_cloudlab_user}/hotelproto')
 
 SLO_MS = 60          # Search Hotel SLO
 WARMUP_RPS = 4000    # 80% of max sustainable

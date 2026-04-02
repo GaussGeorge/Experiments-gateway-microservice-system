@@ -22,7 +22,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOTELAPP_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 RESULTS_DIR="$SCRIPT_DIR/results/figure5"
 YAML_PATH="$HOTELAPP_DIR/msgraph.yaml"
-PROTO_DIR="${PROTO_DIR:-/users/$(whoami)/hotelproto}"
+# Detect CloudLab username from script path (works even when running as root)
+CLOUDLAB_USER=$(echo "$SCRIPT_DIR" | grep -oP '(?<=/users/)[^/]+' || whoami)
+PROTO_DIR="${PROTO_DIR:-/users/$CLOUDLAB_USER/hotelproto}"
 
 # Experiment parameters
 SLO_MS=60

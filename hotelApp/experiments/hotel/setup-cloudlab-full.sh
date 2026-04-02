@@ -23,7 +23,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOTELAPP_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-USERNAME=${CLOUDLAB_USER:-$(whoami)}
+USERNAME=${CLOUDLAB_USER:-$(echo "$SCRIPT_DIR" | grep -oP '(?<=/users/)[^/]+' || whoami)}
 REPO_ROOT="/users/$USERNAME/Experiments-gateway-microservice-system"
 
 log() {
