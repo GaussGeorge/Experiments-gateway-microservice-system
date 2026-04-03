@@ -22,11 +22,11 @@ func main() {
 	var grpcServer *grpc.Server
 	switch config.Intercept {
 	case "rajomon":
-		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.PriceTable.UnaryInterceptor))
+		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.WrapServerInterceptor(config.PriceTable.UnaryInterceptor)))
 	case "breakwaterd":
 		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.Breakwater.UnaryInterceptor))
 	case "dagor":
-		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.Dg.UnaryInterceptorServer))
+		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.WrapServerInterceptor(config.Dg.UnaryInterceptorServer)))
 	case "plain":
 		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(plain.UnaryInterceptor))
 	default:

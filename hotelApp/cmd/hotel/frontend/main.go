@@ -109,15 +109,15 @@ func main() {
 	var grpcServer *grpc.Server
 	switch config.Intercept {
 	case "rajomon":
-		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.PriceTable.UnaryInterceptor))
+		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.WrapServerInterceptor(config.PriceTable.UnaryInterceptor)))
 	case "breakwater", "breakwaterd":
 		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.Breakwater.UnaryInterceptor))
 	case "dagor":
-		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.Dg.UnaryInterceptorServer))
+		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.WrapServerInterceptor(config.Dg.UnaryInterceptorServer)))
 	case "plain":
 		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(plain.UnaryInterceptor))
 	case "topdown":
-		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.Topdown.UnaryInterceptor))
+		grpcServer = grpc.NewServer(grpc.UnaryInterceptor(config.WrapServerInterceptor(config.Topdown.UnaryInterceptor)))
 		go config.Topdown.StartServer(8082)
 		config.DebugLog(fmt.Sprintf("Topdown gRPC RL agent server listening on port %d", 8082))
 	default:
