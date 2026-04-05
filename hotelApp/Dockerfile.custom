@@ -1,0 +1,43 @@
+# Build from the WORKSPACE ROOT (not hotelApp/) so gateway modules are accessible
+# Usage: docker build -t <your-repo>/social-hotel:latest -f hotelApp/Dockerfile.custom .
+FROM golang:1.23 AS builder
+WORKDIR /workspace
+
+# Copy gateway modules first (for better Docker layer caching)
+COPY breakwater-grpc-main/ breakwater-grpc-main/
+COPY dagor-grpc-main/ dagor-grpc-main/
+COPY rajomon-main/ rajomon-main/
+COPY topdown-grpc-main/ topdown-grpc-main/
+
+# Copy hotelApp (go.mod has replace directives pointing to ../XXX-main)
+COPY hotelApp/ hotelApp/
+
+WORKDIR /workspace/hotelApp
+
+# Download non-local dependencies
+RUN go mod download
+
+# Build hotel service binaries
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/frontend ./cmd/hotel/frontend
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/user ./cmd/hotel/user
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/search ./cmd/hotel/search
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/reservation ./cmd/hotel/reservation
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/rate ./cmd/hotel/rate
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/profile ./cmd/hotel/profile
+
+# Build social service binaries (if present)
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/composepost ./cmd/social/compose_post || true
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/hometimeline ./cmd/social/home_timeline || true
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/usertimeline ./cmd/social/user_timeline || true
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/socialgraph ./cmd/social/social_graph || true
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/poststorage ./cmd/social/post_storage || true
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/nginx ./cmd/social/nginx || true
+
+# Build populate tool
+RUN cd populate && CGO_ENABLED=0 GOOS=linux go build -o populate . && cd ..
+
+# Minimal runtime image
+FROM alpine:latest
+COPY --from=builder /workspace/hotelApp/bin /bin/
+COPY --from=builder /workspace/hotelApp/populate/populate /bin/populate
+ENTRYPOINT ["/bin/frontend"]

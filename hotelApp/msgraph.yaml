@@ -89,7 +89,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -170,7 +170,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -256,7 +256,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -341,7 +341,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -427,7 +427,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -510,7 +510,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -593,7 +593,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -677,7 +677,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -766,7 +766,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -849,7 +849,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -932,7 +932,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -1015,7 +1015,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B
@@ -1099,7 +1099,7 @@ nodes:
   - name: BREAKWATER_TRACK_CREDIT
     value: 'false'
   - name: BREAKWATERD_SLO
-    value: 12500us
+    value: 60000us
   - name: BREAKWATERD_A
     value: '0.001'
   - name: BREAKWATERD_B

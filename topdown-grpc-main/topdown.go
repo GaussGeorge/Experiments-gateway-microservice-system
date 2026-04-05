@@ -64,6 +64,9 @@ func (rl *TopDownRL) Allow(ctx context.Context, methodName string) bool {
 	defer rl.mutex.Unlock()
 
 	metrics := rl.interfaces[methodName] // Get metrics for the API
+	if metrics == nil {
+		return true // Unknown method not in sloMap, allow by default
+	}
 
 	now := time.Now()
 	elapsed := now.Sub(metrics.LastRefill).Seconds()
@@ -88,6 +91,9 @@ func (rl *TopDownRL) postProcess(latency time.Duration, methodName string) {
 	defer rl.mutex.Unlock()
 
 	metrics := rl.interfaces[methodName]
+	if metrics == nil {
+		return // Unknown method not in sloMap, skip metrics
+	}
 
 	// Update goodput and SLO violation counter
 	if latency <= rl.slo[methodName] {

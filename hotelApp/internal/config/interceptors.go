@@ -344,10 +344,9 @@ func init() {
 func InitializeBreakwaterd(bwConfig bw.BWParameters) {
 	Breakwaterd = make(map[string]*bw.Breakwater)
 	for _, downstream := range serviceData.Downstreams {
-		// Customize the Breakwater config per downstream if needed
-		// For example, you might have different SLOs or other parameters per downstream service
+		// Downstream instances are client-side only
 		downstreamConfig := bwConfig
-		bwConfig.ServerSide = false
+		downstreamConfig.ServerSide = false
 		addr := getURL(downstream)
 		Breakwaterd[addr] = bw.InitBreakwater(downstreamConfig)
 		DebugLog("[BreakwaterD] Initializing Breakwater for downstream service %s", downstream)
